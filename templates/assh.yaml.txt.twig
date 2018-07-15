@@ -1,0 +1,55 @@
+{#
+    Advanced SSH Config (assh) is a tool that manages the SSH client config file so
+    that bastions/gateways can be used transparently.
+
+    Extra care is taken in formatting this template so that the output is
+    readable in how it exposes tags, security groups, DNS and other information.
+
+    @see https://github.com/moul/advanced-ssh-config
+#}
+hosts:
+{% for instance in ec2 | property_sort('InstanceId') %}
+
+#  {{ instance.InstanceType }} in {{ instance.AvailabilityZone }} launched at {{ instance.LaunchTime | date }}
+{% if instance.VpcId is not empty %}
+#
+#    {% for vpc in vpcs if vpc.VpcId == instance.VpcId %}{{ vpc.Name }}
+{% endfor %}
+#    {{ instance.VpcId }}
+{% endif %}
+#
+{% for securityGroup in instance.SecurityGroups %}
+#  - {{ securityGroup.GroupId }} ({{ securityGroup.GroupName }})
+{% endfor %}
+#
+{% set pad = instance.Tags is not empty ? jp('[*].length(Key) | max(@)', instance.Tags) : 0 %}
+{% for tag in instance.Tags if tag.Key != 'Name' %}
+#    {{ str_pad(tag.Key, pad, ' ') }} | {{ tag.Value }}
+{% endfor %}
+#
+#    aws ec2 describe-instances --instance-id {{ instance.InstanceId }}
+#    --profile {{ profile }} --region {{ region }}
+
+  {{ instance.InstanceId }}:
+    HostName:       {{ instance.PublicDnsName | default(instance.PrivateDnsName) | yaml_encode }}
+    IdentitiesOnly: yes
+    IdentityFile:   {{ '/pem/' ~ instance.KeyName  ~ '.pem' | yaml_encode }}
+    User:           {{ instance.LoginUser | default('ec2-user') | yaml_encode }}
+{% if instance.PublicDnsName is not defined or instance.PublicDnsName is empty %}
+
+    Gateways:
+{% for bastion in bastions if bastion.VpcId == instance.VpcId %}
+      - {{ bastion.InstanceId | trim | replace({' - ':'-',' ': '-'}) | yaml_encode }}
+{% endfor %}
+{% endif %}
+
+    Aliases:
+{% for tag in instance.Tags if tag.Key == 'Name' %}
+      - {{ prefix }}{{ tag.Value | lower | trim | replace({' - ':'-',' ': '-'}) | yaml_encode }}
+{% endfor %}
+      {{ [
+        instance.PublicDnsName, instance.PublicIpAddress,
+        instance.PrivateDnsName, instance.PrivateIpAddress
+       ] | array_filter | yaml_encode(2) | split("\n") | join("\n      ") | trim(null, 'right') }}
+
+{% endfor %}

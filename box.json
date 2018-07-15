@@ -1,0 +1,55 @@
+{
+    "chmod": "0755",
+    "main": "bin/aws-ssh-helper",
+    "output": "build/aws-ssh-helper",
+    "compression": "GZ",
+    "annotations": {
+        "ignore": [
+            "author",
+            "codeCoverageIgnore",
+            "copyright",
+            "deprecated",
+            "final",
+            "internal",
+            "license",
+            "link",
+            "method",
+            "param",
+            "property",
+            "return",
+            "see",
+            "throws",
+            "unstable",
+            "var"
+        ]
+    },
+    "files": [
+        "bin/aws-ssh-helper.php",
+        "vendor/twig/twig/lib/Twig/SimpleTest.php",
+        "vendor/twig/twig/lib/Twig/Test.php",
+        "vendor/twig/twig/lib/Twig/Node/Expression/Test.php",
+        "vendor/twig/twig/lib/Twig/Node/Expression/Test/Constant.php",
+        "vendor/twig/twig/lib/Twig/Node/Expression/Test/Defined.php",
+        "vendor/twig/twig/lib/Twig/Node/Expression/Test/Divisibleby.php",
+        "vendor/twig/twig/lib/Twig/Node/Expression/Test/Even.php",
+        "vendor/twig/twig/lib/Twig/Node/Expression/Test/Null.php",
+        "vendor/twig/twig/lib/Twig/Node/Expression/Test/Odd.php",
+        "vendor/twig/twig/lib/Twig/Node/Expression/Test/Sameas.php",
+        "vendor/twig/twig/src/Node/Expression/Test/ConstantTest.php",
+        "vendor/twig/twig/src/Node/Expression/Test/DefinedTest.php",
+        "vendor/twig/twig/src/Node/Expression/Test/DivisiblebyTest.php",
+        "vendor/twig/twig/src/Node/Expression/Test/EvenTest.php",
+        "vendor/twig/twig/src/Node/Expression/Test/NullTest.php",
+        "vendor/twig/twig/src/Node/Expression/Test/OddTest.php",
+        "vendor/twig/twig/src/Node/Expression/Test/SameasTest.php",
+        "vendor/twig/twig/src/TwigTest.php"
+    ],
+    "directories-bin": [
+        "templates"
+    ],
+    "compactors": [
+        "KevinGH\\Box\\Compactor\\Json",
+        "KevinGH\\Box\\Compactor\\Php"
+    ],
+    "git-commit-short": "git_commit_short"
+}

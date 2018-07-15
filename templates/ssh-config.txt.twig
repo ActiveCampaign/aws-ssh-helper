@@ -1,0 +1,19 @@
+{% for instance in ec2 | property_sort('InstanceId') %}
+## aws --profile {{ profile }} --region {{ region }} ec2 describe-instances --instance-id {{ instance.InstanceId }}
+Host {{ instance.InstanceId }}
+    {{ prefix }}{{ tag.Value | lower | trim | replace({' - ':'-',' ': '-'}) }}
+    {{ instance.PublicDnsName }}
+    {{ instance.PublicIpAddress }}
+    {{ instance.PrivateDnsName }}
+    {{ instance.PrivateIpAddress }}
+    HostName {{ instance.PublicDnsName | default(instance.PrivateDnsName) }}
+    IdentitiesOnly yes
+    IdentityFile /pem/{{ instance.KeyName }}.pem
+    User {{ instance.LoginUser | default('ec2-user') }}
+{% if instance.PublicDnsName is not defined or instance.PublicDnsName is empty %}
+{% for bastion in bastions if bastion.VpcId == instance.VpcId %}
+    ProxyCommand ssh ec2-user@{{ bastion.PublicDnsName }} -W %h:%p
+{% endfor %}
+{% endif %}
+
+{% endfor -%}
