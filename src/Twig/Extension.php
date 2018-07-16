@@ -24,7 +24,7 @@ class Extension extends AbstractExtension
     /**
      * AppExtension constructor.
      *
-     * @param CompilerRuntime $jmesPath
+     * @param CompilerRuntime|null $jmesPath
      */
     public function __construct(CompilerRuntime $jmesPath = null)
     {
@@ -33,6 +33,8 @@ class Extension extends AbstractExtension
 
     /**
      * @return array
+     *
+     * @codeCoverageIgnore
      */
     public function getFilters(): array
     {
@@ -45,6 +47,8 @@ class Extension extends AbstractExtension
 
     /**
      * @return array
+     *
+     * @codeCoverageIgnore
      */
     public function getFunctions(): array
     {

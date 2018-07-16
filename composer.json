@@ -13,7 +13,8 @@
         "symfony/yaml": "^4.1"
     },
     "require-dev": {
-        "humbug/box": "3.x-dev"
+        "humbug/box": "3.x-dev",
+        "phpunit/phpunit": "^7.2"
     },
     "autoload": {
         "psr-4": {
@@ -23,6 +24,11 @@
             "src/functions.php"
         ]
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Bangpound\\Assh\\Tests\\": "tests/"
+        }
+    },
     "bin": [
         "bin/aws-ssh-helper"
     ],
@@ -30,6 +36,16 @@
         "sort-packages": true
     },
     "scripts": {
+        "test": [
+            "@test:phpunit",
+            "@test:phan"
+        ],
+        "test:phpunit": [
+            "phpunit --log-junit build/phpunit/junit.xml --coverage-html build/phpunit/coverage --testdox-text build/phpunit/testdox.txt"
+        ],
+        "test:phan": [
+            "PHAN_DISABLE_XDEBUG_WARN=1 phan --color --progress-bar --processes 2"
+        ],
         "clean": [
             "rm -fr builds"
         ],
