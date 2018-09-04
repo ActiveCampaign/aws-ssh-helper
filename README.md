@@ -13,7 +13,7 @@ Installation
 ------------
 
 ```sh
-$ curl -sO https://bangpound.org/aws-ssh-helper/downloads/aws-ssh-helper.phar
+$ curl -sO https://activecampaign.github.io/aws-ssh-helper/downloads/aws-ssh-helper.phar
 $ chmod +x aws-ssh-helper.phar
 ```
 
