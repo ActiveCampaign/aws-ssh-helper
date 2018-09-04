@@ -39,7 +39,7 @@ hosts:
 
     Gateways:
 {% for bastion in bastions if bastion.VpcId == instance.VpcId %}
-      - {{ bastion.InstanceId | trim | replace({' - ':'-',' ': '-'}) | yaml_encode }}
+      - {{ bastion.InstanceId | yaml_encode }}
 {% endfor %}
 {% endif %}
 
