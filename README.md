@@ -37,3 +37,5 @@ aws-ssh-helper.phar --profile=staging    --region=us-west-1 --prefix=stg- > ~/.s
   is not defined.
 * For instances in a private subnet, an instance in the same VPC with
   `bastion` in its name will be used as a proxy.
+* The default login user is `ec2-user`. If an instance has a tag
+  `LoginUser`, its value will be used instead.

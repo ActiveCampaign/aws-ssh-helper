@@ -34,7 +34,7 @@ hosts:
     HostName:       {{ instance.PublicDnsName | default(instance.PrivateDnsName) | yaml_encode }}
     IdentitiesOnly: yes
     IdentityFile:   {{ '/pem/' ~ instance.KeyName  ~ '.pem' | yaml_encode }}
-    User:           {{ instance.LoginUser | default('ec2-user') | yaml_encode }}
+    User:           {{ jp('[?Key==`LoginUser`].Value[] | [0]', instance.Tags) | default('ec2-user') | yaml_encode }}
 {% if instance.PublicDnsName is not defined or instance.PublicDnsName is empty %}
 
     Gateways:
