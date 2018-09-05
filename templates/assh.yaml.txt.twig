@@ -34,12 +34,12 @@ hosts:
     HostName:       {{ instance.PublicDnsName | default(instance.PrivateDnsName) | yaml_encode }}
     IdentitiesOnly: yes
     IdentityFile:   {{ '/pem/' ~ instance.KeyName  ~ '.pem' | yaml_encode }}
-    User:           {{ instance.LoginUser | default('ec2-user') | yaml_encode }}
+    User:           {{ jp('[?Key==`LoginUser`].Value[] | [0]', instance.Tags) | default('ec2-user') | yaml_encode }}
 {% if instance.PublicDnsName is not defined or instance.PublicDnsName is empty %}
 
     Gateways:
 {% for bastion in bastions if bastion.VpcId == instance.VpcId %}
-      - {{ bastion.InstanceId | trim | replace({' - ':'-',' ': '-'}) | yaml_encode }}
+      - {{ bastion.InstanceId | yaml_encode }}
 {% endfor %}
 {% endif %}
 

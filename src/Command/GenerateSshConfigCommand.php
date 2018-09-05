@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Bangpound\Assh\Command;
 
 use Aws\Ec2\Ec2Client;
+use Psr\Container\ContainerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -20,6 +21,11 @@ use function JmesPath\search;
 class GenerateSshConfigCommand extends Command
 {
     protected static $defaultName = 'generate:ssh-config';
+
+    /**
+     * @var ContainerInterface
+     */
+    private $serviceLocator;
 
     /**
      * @var Ec2Client
@@ -74,14 +80,12 @@ EOT;
     /**
      * GenerateSshConfigCommand constructor.
      *
-     * @param Ec2Client   $ec2Client
-     * @param Environment $twig
+     * @param ContainerInterface $serviceLocator
      */
-    public function __construct(Ec2Client $ec2Client, Environment $twig)
+    public function __construct(ContainerInterface $serviceLocator)
     {
         parent::__construct();
-        $this->client = $ec2Client;
-        $this->twig = $twig;
+        $this->serviceLocator = $serviceLocator;
     }
 
     /**
@@ -96,6 +100,16 @@ EOT;
             ->addOption('prefix', null, InputOption::VALUE_REQUIRED, 'Add a prefix to all names derived from tags', '')
             ->addOption('ssh', null, InputOption::VALUE_NONE, 'Generate plain SSH configuration')
         ;
+    }
+
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     */
+    protected function initialize(InputInterface $input, OutputInterface $output)
+    {
+        $this->client = $this->serviceLocator->get(Ec2Client::class);
+        $this->twig = $this->serviceLocator->get(Environment::class);
     }
 
     /**

@@ -22,8 +22,6 @@ function main(array $argv)
         'argv' => $argv,
         'autoloader' => $autoload,
         'app.root' => $appRoot,
-        'aws.profile' => 'production',
-        'aws.region' => 'us-east-1',
         'twig.path' => ['templates'],
     ]);
 

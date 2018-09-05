@@ -13,7 +13,7 @@ Installation
 ------------
 
 ```sh
-$ curl -sO https://bangpound.org/aws-ssh-helper/downloads/aws-ssh-helper.phar
+$ curl -sO https://activecampaign.github.io/aws-ssh-helper/downloads/aws-ssh-helper.phar
 $ chmod +x aws-ssh-helper.phar
 ```
 
@@ -37,3 +37,5 @@ aws-ssh-helper.phar --profile=staging    --region=us-west-1 --prefix=stg- > ~/.s
   is not defined.
 * For instances in a private subnet, an instance in the same VPC with
   `bastion` in its name will be used as a proxy.
+* The default login user is `ec2-user`. If an instance has a tag
+  `LoginUser`, its value will be used instead.
