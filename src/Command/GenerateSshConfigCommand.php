@@ -142,10 +142,12 @@ EOT;
             ],
         ])->search($this->reductionExpression);
 
-        $bastions = search($this->bastionExpression, $instances);
+        $ec2 = iterator_to_array($instances);
+
+        $bastions = search($this->bastionExpression, $ec2);
 
         $ret = $this->twig->render($templateName, [
-            'ec2' => $instances,
+            'ec2' => $ec2,
             'bastions' => $bastions,
             'region' => $region,
             'profile' => $profile,
